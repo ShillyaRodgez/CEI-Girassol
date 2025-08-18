@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio Semanal - CEI Girassol</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-seedling logo-icon"></i>
+                    <h1 class="unit-name" contenteditable="true" data-placeholder="Nome da Unidade">CEI Girassol</h1>
+                </div>
+                <div class="date-info">
+                    <div class="week-navigation">
+                        <button class="week-nav-btn" onclick="previousWeek()" title="Semana Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <p class="date-range" contenteditable="true" data-placeholder="Data: DD/MM/AAAA a DD/MM/AAAA">Data: 18/08/2025 a 22/08/2025</p>
+                        <button class="week-nav-btn" onclick="nextWeek()" title="Próxima Semana">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="age-group-selector">
+                        <span class="age-label">Faixa Etária:</span>
+                        <select id="ageRangeSelect" onchange="updateAgeRange(this.value)">
+                            <option value="de 0 a 5 meses">de 0 a 5 meses</option>
+                            <option value="de 6 meses">de 6 meses</option>
+                            <option value="de 7 a 11 meses" selected>de 7 a 11 meses</option>
+                            <option value="de 1 a 4 anos">de 1 a 4 anos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Painel de Controle -->
+        <div class="control-panel">
+            <div class="control-group">
+                <label for="theme-select">Tema:</label>
+                <select id="theme-select" onchange="changeTheme(this.value)">
+                    <option value="verde">Verde</option>
+                    <option value="laranja">Laranja</option>
+                    <option value="azul">Azul</option>
+                    <option value="roxo">Roxo</option>
+                </select>
+            </div>
+            
+            <div class="control-buttons">
+                <button class="btn-edit" onclick="toggleEditMode()">
+                    <i class="fas fa-edit"></i> Modo Edição
+                </button>
+                <button class="btn-add" onclick="addMealRow()">
+                    <i class="fas fa-plus"></i> Adicionar Refeição
+                </button>
+                <button class="btn-add" onclick="addDayColumn()">
+                    <i class="fas fa-plus"></i> Adicionar Dia
+                </button>
+                <button class="btn-clear" onclick="clearWeek()">
+                    <i class="fas fa-trash"></i> Limpar Semana
+                </button>
+                <button class="btn-export" onclick="exportData()">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn-import" onclick="document.getElementById('import-file').click()">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+                <button class="btn-print" onclick="printMenu()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button class="btn-save" onclick="saveData()">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+            
+            <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(this.files[0])">
+        </div>
+
+        <!-- Tabela de Cardápio -->
+        <div class="menu-table-container">
+            <table class="menu-table">
+                <thead>
+                    <tr>
+                        <th class="meal-header">Refeição</th>
+                        <th class="day-header">Segunda-feira</th>
+                        <th class="day-header">Terça-feira</th>
+                        <th class="day-header">Quarta-feira</th>
+                        <th class="day-header">Quinta-feira</th>
+                        <th class="day-header">Sexta-feira</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="meal-row">
+                        <td class="meal-name">
+                            <i class="fas fa-coffee meal-icon"></i>
+                            Desjejum
+                        </td>
+                        <td class="meal-cell" data-day="Segunda-Feira" data-meal="Desjejum">
+                            <div class="meal-content">
+                                <div class="meal-section">
+                                    <label class="meal-label">Itens / Preparos</label>
+                                    <textarea class="meal-items" contenteditable="true" placeholder="Ex.: Arroz branco, feijão carioca, frango desfiado c/ cenoura...">Mingau de aveia</textarea>
+                                </div>
+                                <div class="meal-section">
+                                    <label class="meal-label">Fruta</label>
+                                    <input type="text" class="meal-fruit-input" placeholder="Ex.: Banana" value="Banana amassada">
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="tuesday" data-meal="breakfast">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Leite materno ou fórmula</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Mingau de arroz</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Maçã raspada</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="wednesday" data-meal="breakfast">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Leite materno ou fórmula</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Mingau de milho</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Pêra amassada</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="thursday" data-meal="breakfast">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Leite materno ou fórmula</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Mingau de quinoa</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Mamão amassado</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="friday" data-meal="breakfast">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Leite materno ou fórmula</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Mingau de tapioca</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Abacate amassado</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Colação -->
+                    <tr class="meal-row">
+                        <td class="meal-name">
+                            <i class="fas fa-cookie-bite meal-icon"></i>
+                            Colação
+                        </td>
+                        <td class="meal-cell" data-day="monday" data-meal="snack1">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da manhã</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Biscoito de polvilho</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Suco de laranja</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="tuesday" data-meal="snack1">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da manhã</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Pão integral</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Água de coco</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="wednesday" data-meal="snack1">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da manhã</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Bolacha de arroz</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Suco de maçã</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="thursday" data-meal="snack1">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da manhã</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Torrada integral</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Vitamina de banana</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="friday" data-meal="snack1">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da manhã</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Biscoito de maisena</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Suco de pêra</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Almoço -->
+                    <tr class="meal-row">
+                        <td class="meal-name">
+                            <i class="fas fa-utensils meal-icon"></i>
+                            Almoço
+                        </td>
+                        <td class="meal-cell" data-day="monday" data-meal="lunch">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Refeição principal</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Arroz, feijão, frango desfiado, cenoura cozida</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Banana</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="tuesday" data-meal="lunch">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Refeição principal</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Macarrão, carne moída, abobrinha refogada</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Maçã</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="wednesday" data-meal="lunch">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Refeição principal</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Arroz, lentilha, peixe desfiado, batata doce</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Pêra</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="thursday" data-meal="lunch">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Refeição principal</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Quinoa, feijão preto, frango, brócolis</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Mamão</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="friday" data-meal="lunch">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Refeição principal</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Arroz integral, feijão carioca, carne, abóbora</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Abacate</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Lanche -->
+                    <tr class="meal-row">
+                        <td class="meal-name">
+                            <i class="fas fa-birthday-cake meal-icon"></i>
+                            Lanche
+                        </td>
+                        <td class="meal-cell" data-day="monday" data-meal="snack2">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da tarde</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Iogurte natural, granola</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Morango</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="tuesday" data-meal="snack2">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da tarde</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Pão de forma, queijo branco</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Uva</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="wednesday" data-meal="snack2">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da tarde</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Vitamina de frutas</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Kiwi</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="thursday" data-meal="snack2">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da tarde</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Bolacha integral, suco</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Melancia</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="friday" data-meal="snack2">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Lanche da tarde</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Mingau de aveia, mel</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Manga</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Refeição da Tarde -->
+                    <tr class="meal-row">
+                        <td class="meal-name">
+                            <i class="fas fa-baby meal-icon"></i>
+                            Refeição da Tarde
+                        </td>
+                        <td class="meal-cell" data-day="monday" data-meal="dinner">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Jantar leve</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Sopa de legumes, pão</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Banana cozida</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="tuesday" data-meal="dinner">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Jantar leve</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Purê de batata, frango</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Maçã cozida</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="wednesday" data-meal="dinner">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Jantar leve</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Canja de galinha</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Pêra cozida</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="thursday" data-meal="dinner">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Jantar leve</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Risoto de legumes</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Mamão papaia</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="meal-cell" data-day="friday" data-meal="dinner">
+                            <div class="meal-content">
+                                <div class="meal-type" contenteditable="true" data-placeholder="Tipo de refeição">Jantar leve</div>
+                                <div class="meal-foods" contenteditable="true" data-placeholder="Alimentos">Sopa de mandioquinha</div>
+                                <div class="meal-fruit">
+                                    <i class="fas fa-apple-alt fruit-icon"></i>
+                                    <span contenteditable="true" data-placeholder="Fruta">Abacate doce</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+            <div class="observations">
+                <h3><i class="fas fa-info-circle"></i> Observações</h3>
+                <div class="observation-content" contenteditable="true" data-placeholder="Adicione observações gerais ou mensagens da unidade...">
+                    • Todas as refeições são preparadas com ingredientes frescos e orgânicos.<br>
+                    • Em caso de alergias alimentares, favor comunicar a coordenação.<br>
+                    • O cardápio pode sofrer alterações conforme disponibilidade dos ingredientes.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
