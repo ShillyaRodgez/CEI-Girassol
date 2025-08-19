@@ -25,7 +25,7 @@ body {
 
 /* Cabeçalho */
 .header {
-    background: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+    background: linear-gradient(135deg, var(--theme-primary, #4caf50) 0%, var(--theme-accent, #84cc16) 100%);
     border-radius: 15px;
     padding: 30px;
     margin-bottom: 30px;
@@ -104,7 +104,7 @@ body {
 
 .week-nav-btn {
     background: rgba(255, 255, 255, 0.9);
-    border: 2px solid #4caf50;
+    border: 2px solid var(--theme-primary, #4caf50);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -113,12 +113,12 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #4caf50;
+    color: var(--theme-primary, #4caf50);
     font-size: 1rem;
 }
 
 .week-nav-btn:hover {
-    background: #4caf50;
+    background: var(--theme-primary, #4caf50);
     color: white;
     transform: scale(1.1);
 }
@@ -160,7 +160,7 @@ body {
 
 .age-group-selector:hover {
     background: white;
-    border-color: #4caf50;
+    border-color: var(--theme-primary, #4caf50);
 }
 
 .age-label {
@@ -183,12 +183,12 @@ body {
 }
 
 #ageRangeSelect:hover {
-    background: rgba(76, 175, 80, 0.1);
+    background: color-mix(in srgb, var(--theme-primary, #4caf50) 10%, transparent);
 }
 
 #ageRangeSelect:focus {
-    background: rgba(76, 175, 80, 0.1);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+    background: color-mix(in srgb, var(--theme-primary, #4caf50) 10%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-primary, #4caf50) 30%, transparent);
 }
 
 .age-group {
@@ -273,7 +273,7 @@ body {
 }
 
 .btn-add {
-    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    background: linear-gradient(135deg, var(--theme-primary, #4caf50) 0%, var(--theme-accent, #84cc16) 100%);
     color: white;
 }
 
@@ -298,7 +298,7 @@ body {
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    background: linear-gradient(135deg, var(--theme-primary, #4caf50) 0%, var(--theme-accent, #84cc16) 100%);
     color: white;
 }
 
@@ -354,8 +354,8 @@ body {
 }
 
 .menu-table th {
-    background: linear-gradient(135deg, #ffeb3b 0%, #ffc107 100%);
-    color: #333;
+    background: linear-gradient(135deg, var(--theme-primary, #4caf50) 0%, var(--theme-accent, #84cc16) 100%);
+    color: white;
     padding: 20px 15px;
     font-weight: 600;
     text-align: center;
@@ -381,7 +381,7 @@ body {
 }
 
 .meal-name {
-    background: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+    background: linear-gradient(135deg, var(--theme-primary, #4caf50) 0%, var(--theme-accent, #84cc16) 100%);
     color: white;
     padding: 20px 15px;
     font-weight: 600;

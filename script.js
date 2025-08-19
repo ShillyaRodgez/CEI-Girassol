@@ -26,11 +26,7 @@ function setupEventListeners() {
     // Botões principais (usando classes e onclick já definidos no HTML)
     // Os event listeners já estão definidos via onclick no HTML
     
-    // Seletor de tema
-    const themeSelect = document.getElementById('theme-select');
-    if (themeSelect) {
-        themeSelect.addEventListener('change', changeTheme);
-    }
+    // Seletor de tema (usando onclick no HTML)
     
     // Input de importação
     const importFile = document.getElementById('import-file');
