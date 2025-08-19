@@ -8,23 +8,19 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    height: 100vh;
+    min-height: 100vh;
     color: #333;
     line-height: 1.6;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .container {
     max-width: 1600px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    margin-bottom: 20px;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
 }
 
 /* Cabeçalho */
@@ -339,49 +335,14 @@ body {
 
 /* Tabela de Cardápio */
 .menu-table-container {
-    overflow-x: auto;
+    overflow: hidden;
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
     position: relative;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #4caf50 #f1f1f1;
 }
 
-.menu-table-container::-webkit-scrollbar {
-    height: 8px;
-}
 
-.menu-table-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.menu-table-container::-webkit-scrollbar-thumb {
-    background: #4caf50;
-    border-radius: 4px;
-}
-
-.menu-table-container::-webkit-scrollbar-thumb:hover {
-    background: #388e3c;
-}
-
-/* Indicador de scroll sempre visível */
-.menu-table-container::after {
-    content: '← Deslize para ver mais →';
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem;
-    color: #666;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2px 8px;
-    border-radius: 10px;
-    white-space: nowrap;
-    opacity: 0.8;
-}
 
 .menu-table {
     width: 100%;
@@ -695,7 +656,7 @@ body.edit-mode [contenteditable="true"]:hover {
 /* Responsividade - Tablets */
 @media (max-width: 1024px) {
     .container {
-        margin: 15px;
+        margin: 15px auto;
         padding: 20px;
         max-width: 95%;
     }
@@ -731,9 +692,10 @@ body.edit-mode [contenteditable="true"]:hover {
 /* Responsividade - Tablets pequenos e celulares grandes */
 @media (max-width: 768px) {
     .container {
-        margin: 10px;
+        margin: 10px auto;
         padding: 15px;
         border-radius: 15px;
+        max-width: 98%;
     }
     
     .header {
@@ -786,8 +748,7 @@ body.edit-mode [contenteditable="true"]:hover {
     
     .menu-table-container {
         border-radius: 10px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
     }
     
     .menu-table {
@@ -861,9 +822,10 @@ body.edit-mode [contenteditable="true"]:hover {
 /* Responsividade - Celulares pequenos */
 @media (max-width: 480px) {
     .container {
-        margin: 5px;
+        margin: 5px auto;
         padding: 10px;
         border-radius: 10px;
+        max-width: 99%;
     }
     
     .header {
