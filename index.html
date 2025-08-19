@@ -397,6 +397,47 @@
         </footer>
     </div>
 
+    <!-- Modal de Impressão -->
+    <div id="printModal" class="print-modal" style="display: none;">
+        <div class="print-modal-content">
+            <div class="print-modal-header">
+                <h3><i class="fas fa-print"></i> Opções de Impressão</h3>
+                <button class="print-modal-close" onclick="closePrintModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="print-modal-body">
+                <div class="print-option-group">
+                    <label for="printAgeRange">Faixa Etária:</label>
+                    <select id="printAgeRange">
+                        <option value="de 0 a 5 meses">de 0 a 5 meses</option>
+                        <option value="de 6 meses">de 6 meses</option>
+                        <option value="de 7 a 11 meses" selected>de 7 a 11 meses</option>
+                        <option value="de 1 a 4 anos">de 1 a 4 anos</option>
+                    </select>
+                </div>
+                <div class="print-option-group">
+                    <label for="printWeekRange">Período da Semana:</label>
+                    <input type="text" id="printWeekRange" placeholder="Ex: 18/08/2025 a 22/08/2025" />
+                </div>
+                <div class="print-option-group">
+                    <label>
+                        <input type="checkbox" id="printCurrentData" checked>
+                        Usar dados atuais da página
+                    </label>
+                </div>
+            </div>
+            <div class="print-modal-footer">
+                <button class="btn-cancel" onclick="closePrintModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn-confirm" onclick="confirmPrint()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

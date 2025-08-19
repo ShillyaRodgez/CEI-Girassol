@@ -42,7 +42,24 @@ function setupEventListeners() {
         element.addEventListener('keydown', handleKeyDown);
     });
 
-    // Event listener para detectar mudanças na janela
+    // Event listener para fechar modal ao clicar fora
+    document.addEventListener('click', function(e) {
+        const printModal = document.getElementById('printModal');
+        if (e.target === printModal) {
+            closePrintModal();
+        }
+    });
+    
+    // Event listener para ESC fechar modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const printModal = document.getElementById('printModal');
+            if (printModal && printModal.style.display === 'flex') {
+                closePrintModal();
+            }
+        }
+    });
+    
     // Event listener para beforeunload desabilitado para evitar erros
     // window.addEventListener('beforeunload', function(e) {
     //     if (hasUnsavedChanges()) {
@@ -86,10 +103,50 @@ function toggleEditMode() {
     }
 }
 
-// Função de impressão
+// Função de impressão - abre modal de opções
 function printMenu() {
-    // Salvar dados antes de imprimir
+    // Salvar dados antes de abrir modal
     saveCurrentData();
+    
+    // Preencher campos do modal com dados atuais
+    const currentAgeRange = document.getElementById('ageRangeSelect').value;
+    const currentWeekRange = document.querySelector('.date-range').textContent;
+    
+    document.getElementById('printAgeRange').value = currentAgeRange;
+    document.getElementById('printWeekRange').value = currentWeekRange;
+    
+    // Mostrar modal
+    document.getElementById('printModal').style.display = 'flex';
+}
+
+// Função para fechar modal de impressão
+function closePrintModal() {
+    document.getElementById('printModal').style.display = 'none';
+}
+
+// Função para confirmar impressão com opções selecionadas
+function confirmPrint() {
+    const selectedAgeRange = document.getElementById('printAgeRange').value;
+    const selectedWeekRange = document.getElementById('printWeekRange').value;
+    const useCurrentData = document.getElementById('printCurrentData').checked;
+    
+    // Fechar modal
+    closePrintModal();
+    
+    // Salvar valores originais
+    const originalAgeRange = document.getElementById('ageRangeSelect').value;
+    const originalWeekRange = document.querySelector('.date-range').textContent;
+    const originalTitle = document.title;
+    
+    // Aplicar configurações temporárias se não usar dados atuais
+    if (!useCurrentData) {
+        // Atualizar faixa etária temporariamente
+        document.getElementById('ageRangeSelect').value = selectedAgeRange;
+        updateAgeRange(selectedAgeRange);
+        
+        // Atualizar período temporariamente
+        document.querySelector('.date-range').textContent = selectedWeekRange;
+    }
     
     // Desativar modo de edição temporariamente
     const wasEditMode = isEditMode;
@@ -97,20 +154,25 @@ function printMenu() {
         document.body.classList.remove('edit-mode');
     }
     
-    // Configurar página para impressão
-    const originalTitle = document.title;
+    // Configurar título para impressão
     const unitName = document.querySelector('.unit-name').textContent || 'CEI Girassol';
-    const dateRange = document.querySelector('.date-range').textContent || 'Cardápio Semanal';
-    
-    document.title = `${unitName} - ${dateRange}`;
+    const printWeekRange = document.querySelector('.date-range').textContent;
+    document.title = `${unitName} - ${printWeekRange}`;
     
     // Imprimir
     window.print();
     
-    // Restaurar configurações
+    // Restaurar configurações originais
     document.title = originalTitle;
     if (wasEditMode) {
         document.body.classList.add('edit-mode');
+    }
+    
+    // Restaurar dados originais se foram alterados
+    if (!useCurrentData) {
+        document.getElementById('ageRangeSelect').value = originalAgeRange;
+        updateAgeRange(originalAgeRange);
+        document.querySelector('.date-range').textContent = originalWeekRange;
     }
     
     showNotification('Cardápio enviado para impressão!', 'success');
