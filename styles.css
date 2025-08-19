@@ -8,13 +8,14 @@
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
+    height: 100vh;
     color: #333;
     line-height: 1.6;
+    overflow: hidden;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 20px;
     background: white;
@@ -22,6 +23,8 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     margin-bottom: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
 }
 
 /* Cabeçalho */
@@ -340,10 +343,49 @@ body {
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #4caf50 #f1f1f1;
+}
+
+.menu-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.menu-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.menu-table-container::-webkit-scrollbar-thumb {
+    background: #4caf50;
+    border-radius: 4px;
+}
+
+.menu-table-container::-webkit-scrollbar-thumb:hover {
+    background: #388e3c;
+}
+
+/* Indicador de scroll sempre visível */
+.menu-table-container::after {
+    content: '← Deslize para ver mais →';
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    opacity: 0.8;
 }
 
 .menu-table {
     width: 100%;
+    min-width: 1400px;
     border-collapse: collapse;
     background: white;
     border-radius: 15px;
@@ -395,11 +437,11 @@ body {
 }
 
 .meal-cell {
-    padding: 15px;
+    padding: 15px 12px;
     vertical-align: top;
     border-bottom: 1px solid #e0e0e0;
     position: relative;
-    min-width: 220px;
+    min-width: 180px;
 }
 
 .meal-content {
@@ -492,11 +534,102 @@ body {
     border: 1px solid #7b1fa2;
 }
 
+/* Elementos editáveis */
+.meal-type, .meal-foods {
+    min-height: 40px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    background: transparent;
+    cursor: text;
+}
+
+/* Destacar em negrito os tipos de refeição */
+.meal-type {
+    font-weight: bold;
+}
+
+.meal-type:focus, .meal-foods:focus {
+    outline: none;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 3px;
+}
+
+.meal-fruit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: transparent;
+    border-radius: 0;
+    font-size: 0.85rem;
+}
+
+.meal-fruit span {
+    flex: 1;
+    min-height: 20px;
+    outline: none;
+    cursor: text;
+}
+
+.meal-fruit span:focus {
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 3px;
+    padding: 2px 4px;
+}
+
+.fruit-icon {
+    color: #4caf50;
+    font-size: 1rem;
+}
+
 /* Placeholders para elementos editáveis */
 [contenteditable="true"]:empty:before {
     content: attr(data-placeholder);
     color: #999;
     font-style: italic;
+}
+
+/* Responsividade para elementos editáveis */
+@media (max-width: 768px) {
+    .meal-type, .meal-foods {
+        min-height: 35px;
+        padding: 6px 8px;
+        font-size: 0.85rem;
+    }
+    
+    .meal-fruit {
+        padding: 4px 6px;
+        font-size: 0.8rem;
+        gap: 4px;
+    }
+    
+    .fruit-icon {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .meal-type, .meal-foods {
+        min-height: 30px;
+        padding: 4px 6px;
+        font-size: 0.75rem;
+        border-radius: 4px;
+    }
+    
+    .meal-fruit {
+        padding: 3px 4px;
+        font-size: 0.7rem;
+        gap: 3px;
+    }
+    
+    .fruit-icon {
+        font-size: 0.8rem;
+    }
 }
 
 /* Modo de edição */
@@ -559,7 +692,43 @@ body.edit-mode [contenteditable="true"]:hover {
     }
 }
 
-/* Responsividade */
+/* Responsividade - Tablets */
+@media (max-width: 1024px) {
+    .container {
+        margin: 15px;
+        padding: 20px;
+        max-width: 95%;
+    }
+    
+    .header {
+        padding: 25px 20px;
+    }
+    
+    .unit-name {
+        font-size: 2.2rem;
+    }
+    
+    .control-buttons {
+        gap: 8px;
+    }
+    
+    .control-buttons button {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+    
+    .menu-table th {
+        padding: 18px 12px;
+        font-size: 0.95rem;
+    }
+    
+    .meal-cell {
+        padding: 14px 10px;
+        min-width: 200px;
+    }
+}
+
+/* Responsividade - Tablets pequenos e celulares grandes */
 @media (max-width: 768px) {
     .container {
         margin: 10px;
@@ -581,29 +750,60 @@ body.edit-mode [contenteditable="true"]:hover {
     
     .date-info {
         font-size: 1rem;
-    }
-    
-    .control-panel {
         gap: 10px;
     }
     
-    .control-panel button {
+    .week-navigation {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .date-range {
+        min-width: 180px;
+        font-size: 1rem;
+    }
+    
+    .age-group-selector {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .control-panel {
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .control-buttons {
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .control-buttons button {
         padding: 10px 16px;
         font-size: 0.8rem;
+        min-width: 120px;
     }
     
     .menu-table-container {
         border-radius: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .menu-table {
+        min-width: 800px;
     }
     
     .menu-table th {
         padding: 15px 10px;
         font-size: 0.9rem;
+        white-space: nowrap;
     }
     
     .meal-name {
         padding: 15px 10px;
         font-size: 0.9rem;
+        min-width: 120px;
     }
     
     .meal-cell {
@@ -611,21 +811,32 @@ body.edit-mode [contenteditable="true"]:hover {
         min-width: 180px;
     }
     
-    .meal-items {
-        min-height: 50px;
-        font-size: 0.8rem;
+    .meal-type, .meal-foods {
+        font-size: 0.85rem;
+        padding: 6px 8px;
+        min-height: 40px;
     }
     
-    .meal-fruit-input {
+    .meal-fruit {
         font-size: 0.8rem;
+        padding: 4px 6px;
     }
     
-    .meal-label {
-        font-size: 0.7rem;
+    .meal-fruit span {
+        font-size: 0.8rem;
     }
     
     .day-header {
         min-width: 150px;
+    }
+    
+    .footer {
+        padding: 20px 15px;
+    }
+    
+    .observation-content {
+        font-size: 0.9rem;
+        min-height: 60px;
     }
 }
 
@@ -647,10 +858,12 @@ body.edit-mode [contenteditable="true"]:hover {
     border-color: var(--theme-primary, #4caf50);
 }
 
+/* Responsividade - Celulares pequenos */
 @media (max-width: 480px) {
     .container {
         margin: 5px;
         padding: 10px;
+        border-radius: 10px;
     }
     
     .header {
@@ -659,37 +872,97 @@ body.edit-mode [contenteditable="true"]:hover {
     
     .unit-name {
         font-size: 1.5rem;
+        text-align: center;
     }
     
     .logo-section {
         flex-direction: column;
+        gap: 8px;
+    }
+    
+    .logo-icon {
+        font-size: 1.8rem;
+    }
+    
+    .date-info {
+        font-size: 0.9rem;
+        gap: 8px;
+    }
+    
+    .week-navigation {
+        flex-direction: column;
         gap: 10px;
     }
     
+    .week-nav-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .date-range {
+        min-width: 160px;
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .age-group-selector {
+        flex-direction: column;
+        gap: 5px;
+        padding: 6px 12px;
+    }
+    
     .control-panel {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .control-group {
         flex-direction: column;
-        align-items: center;
-    }
-    
-    .control-panel button {
-        width: 200px;
-        justify-content: center;
-    }
-    
-    .menu-table th {
-        padding: 10px 5px;
-        font-size: 0.8rem;
-    }
-    
-    .meal-name {
-        padding: 10px 5px;
-        font-size: 0.8rem;
-        flex-direction: column;
+        align-items: stretch;
         gap: 5px;
     }
     
+    .control-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .control-buttons button {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .menu-table-container {
+        border-radius: 8px;
+    }
+    
+    .menu-table {
+        min-width: 700px;
+    }
+    
+    .menu-table th {
+        padding: 10px 6px;
+        font-size: 0.75rem;
+    }
+    
+    .meal-name {
+        padding: 10px 6px;
+        font-size: 0.75rem;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 100px;
+    }
+    
+    .meal-icon {
+        font-size: 1rem;
+    }
+    
     .meal-cell {
-        padding: 8px 5px;
+        padding: 8px 4px;
+        min-width: 140px;
     }
     
     .day-header {
@@ -701,12 +974,104 @@ body.edit-mode [contenteditable="true"]:hover {
     }
     
     .meal-type, .meal-foods {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        padding: 4px 6px;
+        min-height: 35px;
+        border-radius: 6px;
     }
     
     .meal-fruit {
+        font-size: 0.65rem;
+        padding: 3px 4px;
+        gap: 4px;
+    }
+    
+    .meal-fruit span {
+        font-size: 0.65rem;
+    }
+    
+    .fruit-icon {
+        font-size: 0.8rem;
+    }
+    
+    .footer {
+        padding: 15px 10px;
+    }
+    
+    .observations h3 {
+        font-size: 1rem;
+        gap: 8px;
+    }
+    
+    .observation-content {
+        font-size: 0.8rem;
+        min-height: 50px;
+        padding: 8px;
+    }
+}
+
+/* Responsividade - Celulares muito pequenos */
+@media (max-width: 360px) {
+    .container {
+        margin: 2px;
+        padding: 8px;
+    }
+    
+    .header {
+        padding: 12px 8px;
+    }
+    
+    .unit-name {
+        font-size: 1.3rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+    
+    .date-range {
+        min-width: 140px;
+        font-size: 0.8rem;
+    }
+    
+    .control-buttons button {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .menu-table {
+        min-width: 600px;
+    }
+    
+    .menu-table th {
+        padding: 8px 4px;
         font-size: 0.7rem;
-        padding: 4px 6px;
+    }
+    
+    .meal-name {
+        padding: 8px 4px;
+        font-size: 0.7rem;
+        min-width: 90px;
+    }
+    
+    .meal-cell {
+        padding: 6px 3px;
+        min-width: 120px;
+    }
+    
+    .meal-type, .meal-foods {
+        font-size: 0.65rem;
+        padding: 3px 4px;
+        min-height: 30px;
+    }
+    
+    .meal-fruit {
+        font-size: 0.6rem;
+        padding: 2px 3px;
+    }
+    
+    .meal-fruit span {
+        font-size: 0.6rem;
     }
 }
 

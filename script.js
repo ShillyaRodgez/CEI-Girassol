@@ -47,12 +47,13 @@ function setupEventListeners() {
     });
 
     // Event listener para detectar mudanças na janela
-    window.addEventListener('beforeunload', function(e) {
-        if (hasUnsavedChanges()) {
-            e.preventDefault();
-            e.returnValue = 'Você tem alterações não salvas. Deseja sair mesmo assim?';
-        }
-    });
+    // Event listener para beforeunload desabilitado para evitar erros
+    // window.addEventListener('beforeunload', function(e) {
+    //     if (hasUnsavedChanges()) {
+    //         e.preventDefault();
+    //         e.returnValue = 'Você tem alterações não salvas. Deseja sair mesmo assim?';
+    //     }
+    // });
     
     // Auto-save quando sair do modo de edição
     document.addEventListener('blur', function(e) {
@@ -303,163 +304,158 @@ function formatDate(date) {
 
 // Cardápios pré-definidos por faixa etária
 const AGE_RANGE_MENUS = {
-    '0 a 5 meses': {
-        'Segunda-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
+    'de 0 a 5 meses': {
+        'Segunda-Feira': {
+            'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Leite materno ou fórmula', fruit: '' },
             'Almoço': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Leite materno ou fórmula', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Leite materno ou fórmula', fruit: '' }
         },
-        'Terça-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
+        'Terça-Feira': {
+            'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Leite materno ou fórmula', fruit: '' },
             'Almoço': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Leite materno ou fórmula', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Leite materno ou fórmula', fruit: '' }
         },
-        'Quarta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
+        'Quarta-Feira': {
+            'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Leite materno ou fórmula', fruit: '' },
             'Almoço': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Leite materno ou fórmula', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Leite materno ou fórmula', fruit: '' }
         },
-        'Quinta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
+        'Quinta-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Leite materno ou fórmula', fruit: '' },
             'Almoço': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Leite materno ou fórmula', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Leite materno ou fórmula', fruit: '' }
         },
-        'Sexta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
+        'Sexta-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Leite materno ou fórmula', fruit: '' },
             'Almoço': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Leite materno ou fórmula', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Leite materno ou fórmula', fruit: '' }
         }
     },
-    '6 meses': {
-        'Segunda-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Papa de frutas', fruit: 'Banana amassada' },
+    'de 6 meses': {
+         'Segunda-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Papa de frutas', fruit: 'Banana amassada' },
             'Almoço': { items: 'Papa salgada: batata, cenoura e frango desfiado', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Papa salgada: abóbora e carne moída', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Papa salgada: abóbora e carne moída', fruit: '' }
         },
-        'Terça-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Papa de frutas', fruit: 'Maçã raspada' },
+        'Terça-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Papa de frutas', fruit: 'Maçã raspada' },
             'Almoço': { items: 'Papa salgada: mandioquinha, abobrinha e peixe', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Papa salgada: batata doce e frango', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Papa salgada: batata doce e frango', fruit: '' }
         },
-        'Quarta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Papa de frutas', fruit: 'Pera amassada' },
+        'Quarta-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Papa de frutas', fruit: 'Pera amassada' },
             'Almoço': { items: 'Papa salgada: arroz, brócolis e carne', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Papa salgada: inhame e frango desfiado', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Papa salgada: inhame e frango desfiado', fruit: '' }
         },
-        'Quinta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Papa de frutas', fruit: 'Mamão amassado' },
+        'Quinta-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Papa de frutas', fruit: 'Mamão amassado' },
             'Almoço': { items: 'Papa salgada: macarrão, couve-flor e peixe', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Papa salgada: mandioca e carne moída', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Papa salgada: mandioca e carne moída', fruit: '' }
         },
-        'Sexta-feira': {
-            'Café da Manhã': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Lanche da Manhã': { items: 'Papa de frutas', fruit: 'Banana com maçã' },
+        'Sexta-Feira': {
+             'Desjejum': { items: 'Café da manhã', fruit: '' },
+            'Colação': { items: 'Papa de frutas', fruit: 'Banana com maçã' },
             'Almoço': { items: 'Papa salgada: quinoa, cenoura e frango', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite materno ou fórmula', fruit: '' },
-            'Jantar': { items: 'Papa salgada: abóbora e peixe desfiado', fruit: '' }
+            'Lanche': { items: 'Leite materno ou fórmula', fruit: '' },
+            'Refeição da Tarde': { items: 'Papa salgada: abóbora e peixe desfiado', fruit: '' }
         }
     },
     'de 7 a 11 meses': {
-        'Segunda-feira': {
-            'Café da Manhã': { items: 'Mingau de aveia', fruit: 'Banana' },
-            'Lanche da Manhã': { items: 'Biscoito de polvilho', fruit: 'Maçã' },
+        'Segunda-Feira': {
+            'Desjejum': { items: 'Mingau de aveia', fruit: 'Banana' },
+            'Colação': { items: 'Biscoito de polvilho', fruit: 'Maçã' },
             'Almoço': { items: 'Arroz, feijão, frango desfiado, cenoura refogada', fruit: '' },
-            'Lanche da Tarde': { items: 'Iogurte natural', fruit: 'Pera' },
-            'Jantar': { items: 'Sopa de legumes com carne moída', fruit: '' }
+            'Lanche': { items: 'Iogurte natural', fruit: 'Pera' },
+            'Refeição da Tarde': { items: 'Sopa de legumes com carne moída', fruit: '' }
         },
-        'Terça-feira': {
-            'Café da Manhã': { items: 'Mingau de fubá', fruit: 'Mamão' },
-            'Lanche da Manhã': { items: 'Pão caseiro', fruit: 'Banana' },
+        'Terça-Feira': {
+            'Desjejum': { items: 'Mingau de fubá', fruit: 'Mamão' },
+            'Colação': { items: 'Pão caseiro', fruit: 'Banana' },
             'Almoço': { items: 'Macarrão, molho de tomate, peixe, abobrinha', fruit: '' },
-            'Lanche da Tarde': { items: 'Vitamina de frutas', fruit: 'Maçã' },
-            'Jantar': { items: 'Purê de batata com frango desfiado', fruit: '' }
+            'Lanche': { items: 'Vitamina de frutas', fruit: 'Maçã' },
+            'Refeição da Tarde': { items: 'Purê de batata com frango desfiado', fruit: '' }
         },
-        'Quarta-feira': {
-            'Café da Manhã': { items: 'Mingau de tapioca', fruit: 'Pera' },
-            'Lanche da Manhã': { items: 'Bolacha maria', fruit: 'Mamão' },
+        'Quarta-Feira': {
+            'Desjejum': { items: 'Mingau de tapioca', fruit: 'Pera' },
+            'Colação': { items: 'Bolacha maria', fruit: 'Mamão' },
             'Almoço': { items: 'Arroz, lentilha, carne moída, brócolis', fruit: '' },
-            'Lanche da Tarde': { items: 'Suco natural', fruit: 'Banana' },
-            'Jantar': { items: 'Polenta com molho de carne', fruit: '' }
+            'Lanche': { items: 'Suco natural', fruit: 'Banana' },
+            'Refeição da Tarde': { items: 'Polenta com molho de carne', fruit: '' }
         },
-        'Quinta-feira': {
-            'Café da Manhã': { items: 'Mingau de milho', fruit: 'Maçã' },
-            'Lanche da Manhã': { items: 'Biscoito caseiro', fruit: 'Pera' },
+        'Quinta-Feira': {
+            'Desjejum': { items: 'Mingau de milho', fruit: 'Maçã' },
+            'Colação': { items: 'Biscoito caseiro', fruit: 'Pera' },
             'Almoço': { items: 'Risoto de frango com legumes', fruit: '' },
-            'Lanche da Tarde': { items: 'Leite com achocolatado', fruit: 'Mamão' },
-            'Jantar': { items: 'Sopa de mandioquinha com peixe', fruit: '' }
+            'Lanche': { items: 'Leite com achocolatado', fruit: 'Mamão' },
+            'Refeição da Tarde': { items: 'Sopa de mandioquinha com peixe', fruit: '' }
         },
-        'Sexta-feira': {
-            'Café da Manhã': { items: 'Mingau de quinoa', fruit: 'Banana' },
-            'Lanche da Manhã': { items: 'Pão integral', fruit: 'Maçã' },
+        'Sexta-Feira': {
+            'Desjejum': { items: 'Mingau de quinoa', fruit: 'Banana' },
+            'Colação': { items: 'Pão integral', fruit: 'Maçã' },
             'Almoço': { items: 'Arroz, feijão preto, frango, couve refogada', fruit: '' },
-            'Lanche da Tarde': { items: 'Iogurte com frutas', fruit: 'Pera' },
-            'Jantar': { items: 'Nhoque de batata com molho de carne', fruit: '' }
+            'Lanche': { items: 'Iogurte com frutas', fruit: 'Pera' },
+            'Refeição da Tarde': { items: 'Nhoque de batata com molho de carne', fruit: '' }
         }
     },
-    '1 a 4 anos': {
-        'Segunda-feira': {
-            'Café da Manhã': { items: 'Pão integral, requeijão, leite', fruit: 'Banana' },
-            'Lanche da Manhã': { items: 'Biscoito integral, suco natural', fruit: 'Maçã' },
+    'de 1 a 4 anos': {
+        'Segunda-Feira': {
+            'Desjejum': { items: 'Pão integral, requeijão, leite', fruit: 'Banana' },
+            'Colação': { items: 'Biscoito integral, suco natural', fruit: 'Maçã' },
             'Almoço': { items: 'Arroz, feijão, bife grelhado, salada de tomate', fruit: '' },
-            'Lanche da Tarde': { items: 'Iogurte, granola', fruit: 'Pera' },
-            'Jantar': { items: 'Macarrão ao molho bolonhesa, salada verde', fruit: '' }
+            'Lanche': { items: 'Iogurte, granola', fruit: 'Pera' },
+            'Refeição da Tarde': { items: 'Macarrão ao molho bolonhesa, salada verde', fruit: '' }
         },
-        'Terça-feira': {
-            'Café da Manhã': { items: 'Cereal matinal, leite, mel', fruit: 'Mamão' },
-            'Lanche da Manhã': { items: 'Pão de forma, geleia, suco', fruit: 'Banana' },
+        'Terça-Feira': {
+            'Desjejum': { items: 'Cereal matinal, leite, mel', fruit: 'Mamão' },
+            'Colação': { items: 'Pão de forma, geleia, suco', fruit: 'Banana' },
             'Almoço': { items: 'Arroz, feijão, frango assado, purê de batata', fruit: '' },
-            'Lanche da Tarde': { items: 'Vitamina de frutas', fruit: 'Maçã' },
-            'Jantar': { items: 'Sopa de legumes com carne, pão integral', fruit: '' }
+            'Lanche': { items: 'Vitamina de frutas', fruit: 'Maçã' },
+            'Refeição da Tarde': { items: 'Sopa de legumes com carne, pão integral', fruit: '' }
         },
-        'Quarta-feira': {
-            'Café da Manhã': { items: 'Tapioca com queijo, leite', fruit: 'Pera' },
-            'Lanche da Manhã': { items: 'Bolacha água e sal, suco', fruit: 'Mamão' },
+        'Quarta-Feira': {
+            'Desjejum': { items: 'Tapioca com queijo, leite', fruit: 'Pera' },
+            'Colação': { items: 'Bolacha água e sal, suco', fruit: 'Mamão' },
             'Almoço': { items: 'Arroz, lentilha, peixe grelhado, legumes refogados', fruit: '' },
-            'Lanche da Tarde': { items: 'Achocolatado, biscoito', fruit: 'Banana' },
-            'Jantar': { items: 'Polenta com molho de frango, salada', fruit: '' }
+            'Lanche': { items: 'Achocolatado, biscoito', fruit: 'Banana' },
+            'Refeição da Tarde': { items: 'Polenta com molho de frango, salada', fruit: '' }
         },
-        'Quinta-feira': {
-            'Café da Manhã': { items: 'Pão francês, manteiga, leite com achocolatado', fruit: 'Maçã' },
-            'Lanche da Manhã': { items: 'Bolo caseiro, suco natural', fruit: 'Pera' },
+        'Quinta-Feira': {
+            'Desjejum': { items: 'Pão francês, manteiga, leite com achocolatado', fruit: 'Maçã' },
+            'Colação': { items: 'Bolo caseiro, suco natural', fruit: 'Pera' },
             'Almoço': { items: 'Arroz, feijão, carne moída, abobrinha refogada', fruit: '' },
-            'Lanche da Tarde': { items: 'Iogurte natural, mel', fruit: 'Mamão' },
-            'Jantar': { items: 'Lasanha de legumes, salada de alface', fruit: '' }
+            'Lanche': { items: 'Iogurte natural, mel', fruit: 'Mamão' },
+            'Refeição da Tarde': { items: 'Lasanha de legumes, salada de alface', fruit: '' }
         },
-        'Sexta-feira': {
-            'Café da Manhã': { items: 'Mingau de aveia, leite', fruit: 'Banana' },
-            'Lanche da Manhã': { items: 'Sanduíche natural, suco', fruit: 'Maçã' },
+        'Sexta-Feira': {
+            'Desjejum': { items: 'Mingau de aveia, leite', fruit: 'Banana' },
+            'Colação': { items: 'Sanduíche natural, suco', fruit: 'Maçã' },
             'Almoço': { items: 'Arroz, feijão, frango grelhado, brócolis no vapor', fruit: '' },
-            'Lanche da Tarde': { items: 'Smoothie de frutas', fruit: 'Pera' },
-            'Jantar': { items: 'Risoto de legumes com carne, salada mista', fruit: '' }
+            'Lanche': { items: 'Smoothie de frutas', fruit: 'Pera' },
+            'Refeição da Tarde': { items: 'Risoto de legumes com carne, salada mista', fruit: '' }
         }
     }
 };
 
 // Função para atualizar faixa etária
 function updateAgeRange(value) {
-    const ageGroup = document.querySelector('.age-group');
-    if (ageGroup) {
-        ageGroup.textContent = value;
-    }
-    
     // Aplicar cardápio correspondente à faixa etária
     applyAgeRangeMenu(value);
     
@@ -477,38 +473,25 @@ function applyAgeRangeMenu(ageRange) {
         Object.keys(menuData[day]).forEach(meal => {
             const mealData = menuData[day][meal];
             
-            // Encontrar a célula correspondente
-            const dayHeaders = document.querySelectorAll('.day-header');
-            const mealHeaders = document.querySelectorAll('.meal-header');
+            // Buscar células que correspondem ao dia e refeição
+            const cells = document.querySelectorAll('.meal-cell');
             
-            let dayIndex = -1;
-            let mealIndex = -1;
-            
-            dayHeaders.forEach((header, index) => {
-                if (header.textContent.trim() === day) {
-                    dayIndex = index;
-                }
-            });
-            
-            mealHeaders.forEach((header, index) => {
-                if (header.textContent.trim() === meal) {
-                    mealIndex = index;
-                }
-            });
-            
-            if (dayIndex >= 0 && mealIndex >= 0) {
-                // Calcular posição da célula na grade
-                const cellIndex = mealIndex * 5 + dayIndex;
-                const cells = document.querySelectorAll('.meal-cell');
+            cells.forEach(cell => {
+                const cellDay = cell.dataset.day;
+                const cellMeal = cell.dataset.meal;
                 
-                if (cells[cellIndex]) {
-                    const itemsTextarea = cells[cellIndex].querySelector('.meal-items');
-                    const fruitInput = cells[cellIndex].querySelector('.meal-fruit-input');
+                // Verificar se a célula corresponde ao dia e refeição
+                if (cellDay === day && cellMeal === meal) {
+                    // Estrutura padrão com divs editáveis
+                    const mealTypeDiv = cell.querySelector('.meal-type');
+                    const mealFoodsDiv = cell.querySelector('.meal-foods');
+                    const mealFruitSpan = cell.querySelector('.meal-fruit span');
                     
-                    if (itemsTextarea) itemsTextarea.value = mealData.items;
-                    if (fruitInput) fruitInput.value = mealData.fruit;
+                    if (mealTypeDiv) mealTypeDiv.textContent = mealData.items;
+                    if (mealFoodsDiv) mealFoodsDiv.textContent = mealData.items;
+                    if (mealFruitSpan) mealFruitSpan.textContent = mealData.fruit;
                 }
-            }
+            });
         });
     });
     
@@ -518,12 +501,18 @@ function applyAgeRangeMenu(ageRange) {
 // Salvar dados
 function saveData() {
     try {
+        const unitNameEl = document.querySelector('.unit-name');
+        const dateRangeEl = document.querySelector('.date-range');
+        const ageRangeEl = document.getElementById('ageRangeSelect');
+        const observationsEl = document.querySelector('.observation-content');
+        const themeEl = document.getElementById('theme-select');
+        
         const data = {
-            unitName: document.querySelector('.unit-name') ? document.querySelector('.unit-name').textContent : 'CEI Girassol',
-            weekDate: document.querySelector('.date-range') ? document.querySelector('.date-range').textContent : '',
-            ageRange: document.getElementById('ageRangeSelect') ? document.getElementById('ageRangeSelect').value : 'de 7 a 11 meses',
-            observations: document.querySelector('.observation-content') ? document.querySelector('.observation-content').textContent : '',
-            theme: document.getElementById('theme-select') ? document.getElementById('theme-select').value : 'verde',
+            unitName: unitNameEl ? unitNameEl.textContent : 'CEI Girassol',
+            weekDate: dateRangeEl ? dateRangeEl.textContent : '',
+            ageRange: ageRangeEl ? ageRangeEl.value : 'de 7 a 11 meses',
+            observations: observationsEl ? observationsEl.textContent : '',
+            theme: themeEl ? themeEl.value : 'verde',
             menuItems: {}
         };
         
@@ -556,14 +545,19 @@ function saveData() {
 
 // Salvar dados atuais no localStorage
 function saveCurrentData() {
+    const unitNameEl = document.querySelector('.unit-name');
+    const dateRangeEl = document.querySelector('.date-range');
+    const ageRangeEl = document.getElementById('ageRangeSelect');
+    const observationsEl = document.querySelector('.observation-content');
+    
     const data = {
-        unitName: document.querySelector('.unit-name').textContent,
-        dateRange: document.querySelector('.date-range').textContent,
-        ageGroup: document.querySelector('.age-group').textContent,
-        observations: document.querySelector('.observation-content').innerHTML,
-        meals: {},
-        lastSaved: new Date().toISOString()
-    };
+            unitName: unitNameEl ? unitNameEl.textContent : 'CEI Girassol',
+            dateRange: dateRangeEl ? dateRangeEl.textContent : '',
+            ageGroup: ageRangeEl ? ageRangeEl.value : 'de 7 a 11 meses',
+            observations: observationsEl ? observationsEl.innerHTML : '',
+            meals: {},
+            lastSaved: new Date().toISOString()
+        };
     
     // Salvar dados das refeições
     const mealCells = document.querySelectorAll('.meal-cell');
@@ -649,37 +643,45 @@ function loadSavedData() {
 
 // Verificar se há mudanças não salvas
 function hasUnsavedChanges() {
-    const currentData = getCurrentData();
-    return JSON.stringify(currentData) !== JSON.stringify(menuData);
+    // Função completamente desabilitada para evitar erros de DOM
+    // Removido getCurrentData() que causava TypeError
+    return false;
 }
 
 // Obter dados atuais
 function getCurrentData() {
+    const unitNameEl = document.querySelector('.unit-name');
+    const dateRangeEl = document.querySelector('.date-range');
+    const ageRangeSelectEl = document.querySelector('#ageRangeSelect');
+    const observationsEl = document.querySelector('.observation-content');
+    
     const data = {
-        unitName: document.querySelector('.unit-name').textContent,
-        dateRange: document.querySelector('.date-range').textContent,
-        ageGroup: document.querySelector('.age-group').textContent,
-        observations: document.querySelector('.observation-content').innerHTML,
+        unitName: unitNameEl ? unitNameEl.textContent : '',
+        dateRange: dateRangeEl ? dateRangeEl.textContent : '',
+        ageGroup: ageRangeSelectEl ? ageRangeSelectEl.value : '',
+        observations: observationsEl ? observationsEl.innerHTML : '',
         meals: {}
-    };
+    }
     
     const mealCells = document.querySelectorAll('.meal-cell');
     mealCells.forEach(cell => {
         const day = cell.dataset.day;
         const meal = cell.dataset.meal;
-        const mealType = cell.querySelector('.meal-type').textContent;
-        const mealFoods = cell.querySelector('.meal-foods').textContent;
-        const mealFruit = cell.querySelector('.meal-fruit span').textContent;
+        const mealTypeEl = cell.querySelector('.meal-type');
+        const mealFoodsEl = cell.querySelector('.meal-foods');
+        const fruitEl = cell.querySelector('.meal-fruit span');
         
-        if (!data.meals[day]) {
-            data.meals[day] = {};
+        if (day && meal) {
+            if (!data.meals[day]) {
+                data.meals[day] = {};
+            }
+            
+            data.meals[day][meal] = {
+                type: mealTypeEl ? (mealTypeEl.textContent || '') : '',
+                foods: mealFoodsEl ? (mealFoodsEl.textContent || '') : '',
+                fruit: fruitEl ? (fruitEl.textContent || '') : ''
+            };
         }
-        
-        data.meals[day][meal] = {
-            type: mealType,
-            foods: mealFoods,
-            fruit: mealFruit
-        };
     });
     
     return data;
@@ -996,7 +998,7 @@ function importData(event) {
 function loadDataFromObject(data) {
     if (data.unitName) document.querySelector('.unit-name').textContent = data.unitName;
     if (data.dateRange) document.querySelector('.date-range').textContent = data.dateRange;
-    if (data.ageGroup) document.querySelector('.age-group').textContent = data.ageGroup;
+    if (data.ageGroup && document.getElementById('ageRangeSelect')) document.getElementById('ageRangeSelect').value = data.ageGroup;
     if (data.observations) document.querySelector('.observation-content').innerHTML = data.observations;
     
     if (data.meals) {
@@ -1045,7 +1047,7 @@ function addTooltips() {
         '.btn-save': 'Salvar alterações (Ctrl+S)',
         '.unit-name': 'Clique para editar o nome da unidade',
         '.date-range': 'Clique para editar o período',
-        '.age-group': 'Clique para editar a faixa etária'
+        '#ageRangeSelect': 'Selecione a faixa etária'
     };
     
     Object.keys(tooltips).forEach(selector => {
