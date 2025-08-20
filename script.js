@@ -28,11 +28,12 @@ function setupEventListeners() {
     
     // Seletor de tema (usando onclick no HTML)
     
-    // Input de importação
-    const importFile = document.getElementById('import-file');
-    if (importFile) {
-        importFile.addEventListener('change', importData);
-    }
+    // Input de importação é tratado via atributo onchange no HTML (importData(event))
+    // Removido addEventListener duplicado para evitar ReferenceError em alguns navegadores
+    // const importFile = document.getElementById('import-file');
+    // if (importFile && typeof importData === 'function') {
+    //     importFile.addEventListener('change', importData);
+    // }
     
     // Event listeners para elementos editáveis
     const editableElements = document.querySelectorAll('[contenteditable="true"]');
@@ -531,25 +532,16 @@ function applyAgeRangeMenu(ageRange) {
         Object.keys(menuData[day]).forEach(meal => {
             const mealData = menuData[day][meal];
             
-            // Buscar células que correspondem ao dia e refeição
-            const cells = document.querySelectorAll('.meal-cell');
-            
-            cells.forEach(cell => {
-                const cellDay = cell.dataset.day;
-                const cellMeal = cell.dataset.meal;
+            // Seleciona diretamente a célula correspondente ao dia e refeição
+            const cell = document.querySelector(`[data-day="${day}"][data-meal="${meal}"]`);
+            if (cell) {
+                const mealFoodsDiv = cell.querySelector('.meal-foods');
+                const mealFruitSpan = cell.querySelector('.meal-fruit span');
                 
-                // Verificar se a célula corresponde ao dia e refeição
-                if (cellDay === day && cellMeal === meal) {
-                    // Estrutura padrão com divs editáveis
-                    const mealTypeDiv = cell.querySelector('.meal-type');
-                    const mealFoodsDiv = cell.querySelector('.meal-foods');
-                    const mealFruitSpan = cell.querySelector('.meal-fruit span');
-                    
-                    if (mealTypeDiv) mealTypeDiv.textContent = mealData.items;
-                    if (mealFoodsDiv) mealFoodsDiv.textContent = mealData.items;
-                    if (mealFruitSpan) mealFruitSpan.textContent = mealData.fruit;
-                }
-            });
+                // Preenche os campos visuais corretos
+                if (mealFoodsDiv) mealFoodsDiv.textContent = mealData.items || '';
+                if (mealFruitSpan) mealFruitSpan.textContent = mealData.fruit || '';
+            }
         });
     });
     
@@ -584,12 +576,12 @@ function saveData() {
                 data.menuItems[day] = {};
             }
             
-            const mealItems = cell.querySelector('.meal-items');
-            const mealFruit = cell.querySelector('.meal-fruit-input');
+            const mealFoodsDiv = cell.querySelector('.meal-foods');
+            const mealFruitSpan = cell.querySelector('.meal-fruit span');
             
             data.menuItems[day][meal] = {
-                items: mealItems ? mealItems.value : '',
-                fruit: mealFruit ? mealFruit.value : ''
+                items: mealFoodsDiv ? mealFoodsDiv.textContent : '',
+                fruit: mealFruitSpan ? mealFruitSpan.textContent : ''
             };
         });
         
@@ -674,11 +666,11 @@ function loadSavedData() {
                         if (cell) {
                             const item = data.menuItems[day][meal];
                             
-                            const mealItems = cell.querySelector('.meal-items');
-                            const mealFruit = cell.querySelector('.meal-fruit-input');
+                            const mealFoodsDiv = cell.querySelector('.meal-foods');
+                            const mealFruitSpan = cell.querySelector('.meal-fruit span');
                             
-                            if (mealItems && item.items) mealItems.value = item.items;
-                            if (mealFruit && item.fruit) mealFruit.value = item.fruit;
+                            if (mealFoodsDiv) mealFoodsDiv.textContent = item.items || '';
+                            if (mealFruitSpan) mealFruitSpan.textContent = item.fruit || '';
                         }
                     });
                 });
@@ -963,10 +955,10 @@ function getTimeAgo(date) {
 // Funcionalidades de exportação/importação
 function exportData() {
     const data = {
-        unitName: document.getElementById('unitName').textContent,
-        weekDate: document.getElementById('weekDate').textContent,
-        ageRange: document.getElementById('ageRange').textContent,
-        observations: document.getElementById('observations').textContent,
+        unitName: (document.querySelector('.unit-name') || {}).textContent || 'CEI Girassol',
+        weekDate: (document.querySelector('.date-range') || {}).textContent || '',
+        ageRange: (document.getElementById('ageRangeSelect') || {}).value || 'de 7 a 11 meses',
+        observations: (document.querySelector('.observation-content') || {}).textContent || '',
         theme: document.getElementById('theme-select') ? document.getElementById('theme-select').value : 'verde',
         menuItems: {}
     };
@@ -981,12 +973,12 @@ function exportData() {
             data.menuItems[day] = {};
         }
         
-        const mealItems = cell.querySelector('.meal-items');
-        const mealFruit = cell.querySelector('.meal-fruit-input');
+        const mealFoodsDiv = cell.querySelector('.meal-foods');
+        const mealFruitSpan = cell.querySelector('.meal-fruit span');
         
         data.menuItems[day][meal] = {
-            items: mealItems ? mealItems.value : '',
-            fruit: mealFruit ? mealFruit.value : ''
+            items: mealFoodsDiv ? mealFoodsDiv.textContent : '',
+            fruit: mealFruitSpan ? mealFruitSpan.textContent : ''
         };
     });
     
@@ -1007,49 +999,90 @@ function exportData() {
 function importData(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
             const data = JSON.parse(e.target.result);
-            
-            // Carregar dados do cabeçalho
-            if (data.unitName) document.getElementById('unitName').textContent = data.unitName;
-            if (data.weekDate) document.getElementById('weekDate').textContent = data.weekDate;
-            if (data.ageRange) document.getElementById('ageRange').textContent = data.ageRange;
-            if (data.observations) document.getElementById('observations').textContent = data.observations;
+
+            // Opção de mesclagem: só preenche campos vazios
+            const merge = !!(document.getElementById('merge-import') && document.getElementById('merge-import').checked);
+
+            // Carregar dados do cabeçalho na UI atual
+            if (data.unitName && document.querySelector('.unit-name')) document.querySelector('.unit-name').textContent = data.unitName;
+            if (data.weekDate && document.querySelector('.date-range')) document.querySelector('.date-range').textContent = data.weekDate;
+            if (data.ageRange && document.getElementById('ageRangeSelect')) document.getElementById('ageRangeSelect').value = data.ageRange;
+            if (data.observations && document.querySelector('.observation-content')) document.querySelector('.observation-content').textContent = data.observations;
             if (data.theme && document.getElementById('theme-select')) {
-                 document.getElementById('theme-select').value = data.theme;
-                 applyTheme(data.theme);
-             }
-            
-            // Carregar itens do menu
-            if (data.menuItems) {
+                document.getElementById('theme-select').value = data.theme;
+                applyTheme(data.theme);
+            }
+
+            let applied = 0, skipped = 0, invalid = 0;
+            const errors = [];
+
+            // Validar e carregar itens do menu (semana atual)
+            if (data.menuItems && typeof data.menuItems === 'object') {
+                const validDays = Array.isArray(DEFAULT_DAYS) ? DEFAULT_DAYS : ["Segunda-Feira","Terça-Feira","Quarta-Feira","Quinta-Feira","Sexta-Feira"];
+                const validMeals = Array.isArray(DEFAULT_MEALS) ? DEFAULT_MEALS : ["Desjejum","Colação","Almoço","Lanche","Refeição da Tarde"];
+
                 Object.keys(data.menuItems).forEach(day => {
-                    Object.keys(data.menuItems[day]).forEach(meal => {
+                    if (!validDays.includes(day)) { errors.push(`Dia inválido: ${day}`); invalid++; return; }
+                    const mealsObj = data.menuItems[day];
+                    if (!mealsObj || typeof mealsObj !== 'object') { errors.push(`Formato inválido para o dia: ${day}`); invalid++; return; }
+
+                    Object.keys(mealsObj).forEach(meal => {
+                        if (!validMeals.includes(meal)) { errors.push(`Refeição inválida em ${day}: ${meal}`); invalid++; return; }
                         const cell = document.querySelector(`[data-day="${day}"][data-meal="${meal}"]`);
-                        if (cell) {
-                            const item = data.menuItems[day][meal];
-                            
-                            const mealItems = cell.querySelector('.meal-items');
-                            const mealFruit = cell.querySelector('.meal-fruit-input');
-                            
-                            if (mealItems && item.items) mealItems.value = item.items;
-                            if (mealFruit && item.fruit) mealFruit.value = item.fruit;
+                        if (!cell) { errors.push(`Célula não encontrada para ${day} / ${meal}`); invalid++; return; }
+                        const item = mealsObj[meal] || {};
+                        const mealFoodsDiv = cell.querySelector('.meal-foods');
+                        const mealFruitSpan = cell.querySelector('.meal-fruit span');
+
+                        if ('items' in item) {
+                            const newFoods = item.items || '';
+                            if (mealFoodsDiv) {
+                                const currentFoods = (mealFoodsDiv.textContent || '').trim();
+                                if (merge && currentFoods) {
+                                    skipped++;
+                                } else {
+                                    mealFoodsDiv.textContent = newFoods;
+                                    applied++;
+                                }
+                            }
+                        }
+
+                        if ('fruit' in item) {
+                            const newFruit = item.fruit || '';
+                            if (mealFruitSpan) {
+                                const currentFruit = (mealFruitSpan.textContent || '').trim();
+                                if (merge && currentFruit) {
+                                    skipped++;
+                                } else {
+                                    mealFruitSpan.textContent = newFruit;
+                                    applied++;
+                                }
+                            }
                         }
                     });
                 });
             }
-            
-            showNotification('Dados importados com sucesso!', 'success');
+
+            saveData();
+
+            if (errors.length) {
+                const details = errors.slice(0, 6).join(' | ');
+                showNotification(`Importação concluída com avisos. Aplicados: ${applied}, Ignorados: ${skipped}, Inválidos: ${invalid}. Detalhes: ${details}${errors.length > 6 ? ' ...' : ''}`, 'warning');
+            } else {
+                showNotification(`Dados importados com sucesso! Aplicados: ${applied}${skipped ? `, Ignorados: ${skipped}` : ''}.`, 'success');
+            }
         } catch (error) {
             console.error('Erro ao importar dados:', error);
             showNotification('Erro ao importar arquivo. Verifique se o formato está correto.', 'error');
         }
     };
-    
+
     reader.readAsText(file);
-    event.target.value = ''; // Limpar input
+    event.target.value = '';
 }
 
 // Carregar dados de um objeto
@@ -1076,57 +1109,6 @@ function loadDataFromObject(data) {
     saveCurrentData();
 }
 
-// Atalhos de teclado globais
-document.addEventListener('keydown', function(event) {
-    // Ctrl+P para imprimir
-    if (event.ctrlKey && event.key === 'p') {
-        event.preventDefault();
-        printMenu();
-    }
-    
-    // Ctrl+E para alternar modo de edição
-    if (event.ctrlKey && event.key === 'e') {
-        event.preventDefault();
-        toggleEditMode();
-    }
-    
-    // Ctrl+S para salvar
-    if (event.ctrlKey && event.key === 's') {
-        event.preventDefault();
-        saveData();
-    }
-});
-
-// Adicionar tooltips informativos
-function addTooltips() {
-    const tooltips = {
-        '.btn-edit': 'Alternar modo de edição (Ctrl+E)',
-        '.btn-print': 'Imprimir cardápio (Ctrl+P)',
-        '.btn-save': 'Salvar alterações (Ctrl+S)',
-        '.unit-name': 'Clique para editar o nome da unidade',
-        '.date-range': 'Clique para editar o período',
-        '#ageRangeSelect': 'Selecione a faixa etária'
-    };
-    
-    Object.keys(tooltips).forEach(selector => {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.title = tooltips[selector];
-        }
-    });
-}
-
-// Inicializar tooltips quando a página carregar
-document.addEventListener('DOMContentLoaded', addTooltips);
-
-// Função para limpar todos os dados
-function clearAllData() {
-    if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita.')) {
-        localStorage.removeItem('ceiGirassolMenu');
-        location.reload();
-    }
-}
-
 // Adicionar funcionalidade de busca
 function searchMenu(query) {
     const cells = document.querySelectorAll('.meal-cell');
@@ -1150,5 +1132,23 @@ function clearSearch() {
     cells.forEach(cell => {
         cell.style.background = '';
         cell.style.border = '';
+    });
+}
+
+// Adicionar tooltips informativos
+function addTooltips() {
+    const tooltips = {
+        '.btn-edit': 'Alternar modo de edição (Ctrl+E)',
+        '.btn-print': 'Imprimir cardápio (Ctrl+P)',
+        '.btn-save': 'Salvar alterações (Ctrl+S)',
+        '.btn-export': 'Exportar dados para JSON',
+        '.btn-import': 'Importar dados de JSON',
+        '#merge-import': 'Se marcado, só preenche campos vazios ao importar'
+    };
+    Object.keys(tooltips).forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.title = tooltips[selector];
+        }
     });
 }

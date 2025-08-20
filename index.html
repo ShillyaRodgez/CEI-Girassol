@@ -60,6 +60,9 @@
                 <button class="btn-import" onclick="document.getElementById('import-file').click()">
                     <i class="fas fa-upload"></i> Importar
                 </button>
+                <button class="btn-export" onclick="exportData()">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
                 <button class="btn-print" onclick="printMenu()">
                     <i class="fas fa-print"></i> Imprimir
                 </button>
@@ -68,7 +71,8 @@
                 </button>
             </div>
             
-            <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(this.files[0])">
+            <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)">
+            <label class="merge-option"><input type="checkbox" id="merge-import"> Mesclar importação (não sobrescrever)</label>
         </div>
 
         <!-- Tabela de Cardápio -->
@@ -427,6 +431,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    -     <script src="script.js?v=1.0.3"></script>
++     <script src="script.js?v=1.0.4"></script>
+  </body>
+  </html>
